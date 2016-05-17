@@ -21,9 +21,7 @@ app.get('/', function(req, res){
 	var directory = './uploads/';
 	var files = fs.readdirSync('./uploads');
 	var strHtml = "";
-	var docHeader = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Custom Node.js cartridge for OpenShift</title><link href='https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Mono' rel='stylesheet' type='text/css'><link href=\"main.css\" rel=\"stylesheet\"></head><body><header><p>Torrent List</p></header><main>";
-	var htmlHeader = docHeader + "<br><br><br><h1 align=\"center\">Torrent List</h1><table align=\"center\" border cellspacing=\"0\" cellpadding=\"0\"><br><br><br><th>Torrent Id</th><th>Torrent Name</th><th>Comments</th><th>Added</th><th>Size</th>\n";
-	var htmlFooter = "</main><footer><p>Developed by Claudia Rogoz 341 C3 </p></footer><script src=\"https://cdn.jsdelivr.net/riot/2.3.16/riot+compiler.min.js\"></script><script src=\"https://cdn.jsdelivr.net/superagent/0.18.0/superagent.min.js\"></script><script type=\"riot/tag\" src=\"info.tag\"></script><script>riot.mount('*')</script></body></html>";
+	var htmlHeader = "<br><br><br><h1 align=\"center\">Torrent List</h1><table align=\"center\" border cellspacing=\"0\" cellpadding=\"0\"><br><br><br><th>Torrent Id</th><th>Torrent Name</th><th>Comments</th><th>Added</th><th>Size</th>\n";
 	var endLine = "</tr>";	
 		
 	for (var i in files) {
@@ -35,7 +33,6 @@ app.get('/', function(req, res){
 		htmlHeader = htmlHeader + "<td>" + i + "</td>" + "<td>" + name + "</td>" + "<td>" + "" + "</td>" + "<td>" + time  + "</td>" + "<td>" + size+ "</td>" + endLine;  
 	}
 	htmlHeader = htmlHeader + "</table>";
-	htmlHeader = htmlHeader + htmlFooter;
 	res.end(htmlHeader);
 });
 

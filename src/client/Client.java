@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Random;
 
@@ -14,9 +15,8 @@ import utils.Constants;
 
 public class Client {
 	
-	public String peer_id = "";
-	public String torrent;
 	protected byte[] id = new byte[20];
+	public String torrent;
 	public FileInputStream in;
 	public Map meta;
 	private BDecoder decoder;
@@ -24,10 +24,14 @@ public class Client {
 	private Integer port;
 	
 	Client () {	
-		Random rand = new Random();
-	
-		for (int i = 0; i< Constants.PEER_LENGTH; i++)
-			 peer_id.concat(String.valueOf((char)rand.nextInt(256)));
+		
+		Random random = new Random();
+        int i;
+        for (i = 0; i < 20; i++) {
+            id[i++] = (byte)random.nextInt(256);
+        }
+		
+		System.out.println("peer = " + id);
 	}
 	
 	public void prepareStorage() {
@@ -41,7 +45,7 @@ public class Client {
 		
 	}
 	
-	public void processTorrent(File f) throws BDecodeException, IOException, ConnectionException {
+	public void processTorrent(File f) throws BDecodeException, IOException, ConnectionException, NoSuchAlgorithmException {
 		
 		for (int port= Constants.MIN_PORT; serverSocket == null && port < Constants.MAX_PORT; ++port) {
 			serverSocket = new ServerSocket(port);
@@ -52,13 +56,16 @@ public class Client {
 		}
 		port = serverSocket.getLocalPort();
 		
-		in = new FileInputStream(f);
-		decoder = new BDecoder(in);
+		//in = new FileInputStream(f);
+		decoder = new BDecoder(f);
 		//System.out.println("Map = " +  decoder.getMetaDict());
 		
 		getTorrentPieces();
 		
 		decoder.prettyPrintMeta();
+		TorrentManager manager = new TorrentManager(id, "localhost", port, decoder);
+		TrackerConnection conn = new TrackerConnection(decoder, manager);
+		conn.start();
 		
 	}
 	

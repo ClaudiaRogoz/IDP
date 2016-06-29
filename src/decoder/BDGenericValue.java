@@ -1,44 +1,50 @@
 package decoder;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
 public class BDGenericValue {
-	private Map<String, BDGenericValue> dict;
-	private String string;
-	private List<BDGenericValue> list;
-	private BigInteger number;
-	
+	private Object genericValue;
+
 	public BDGenericValue(BigInteger number) {
-		this.number = number;
+		this.genericValue = number;
 		
 	}
 	public BDGenericValue(Map<String, BDGenericValue> dict) {
-		this.dict = dict;
+		this.genericValue = dict;
 	}
 
 	public BDGenericValue(List<BDGenericValue> list) {
-		this.list = list;
+		this.genericValue = list;
 	}
 
-	public BDGenericValue(String value) {
-		this.string = value;
+	public BDGenericValue(byte[] bytes) {
+		this.genericValue = bytes;
 	}
-	public BigInteger toNumber() {
-		return number;
+	public BDGenericValue(String value) {
+		this.genericValue = value;
+	}
+	
+	public Number toNumber() {
+		return (Number)genericValue;
+	}
+	
+	public byte[] toBytes() {
+		return (byte[])genericValue;
 	}
 	
 	public List<BDGenericValue> toList() {
-		return list;
+		return (List<BDGenericValue>)genericValue;
 	}
 	
-	public String toChars() {
-		return string;
+	public String toChars() throws UnsupportedEncodingException {
+		return new String(toBytes(),  "UTF-8");
 	}
-
+ 
 	public Map<String, BDGenericValue> toDict(){
-		return dict;
+		return (Map<String, BDGenericValue>)genericValue;
 	}
 	
 }

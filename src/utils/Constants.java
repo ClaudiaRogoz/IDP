@@ -17,4 +17,10 @@ public class Constants {
 	public static final Integer MIN_PORT = 6881;
 	public static final Integer MAX_PORT = 6889;
 	public static final Integer PEER_LENGTH = 20;
+	public static final String INTERVAL = "interval";
+	public static final String PEERS = "peers";
+	public static final String PEER_ID = "peer id";
+	public static final String IP = "ip";
+	public static final String PORT = "port";
+	public static final String PROTOCOL = "BitTorrent protocol";
 }
